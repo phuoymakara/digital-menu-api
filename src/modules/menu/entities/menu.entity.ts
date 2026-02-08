@@ -29,7 +29,11 @@ export class Menu {
   foodType: FoodType;
 
   @ManyToMany(() => Category, (cat) => cat.menus)
-  @JoinTable({ name: 'menu_categories' })
+  @JoinTable({
+    name: 'menu_categories',
+    joinColumn: { name: 'menu_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'category_id', referencedColumnName: 'id' },
+  })
   categories: Category[];
 
   @OneToMany(() => MenuVariant, (variant) => variant.menu, {
