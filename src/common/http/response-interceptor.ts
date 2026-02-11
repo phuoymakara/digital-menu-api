@@ -13,7 +13,7 @@ export class ResponseInterceptor<T>
   intercept(context: ExecutionContext, next: CallHandler) {
     return next.handle().pipe(
       map((data) => ({
-        statusCode: 200,
+        status_code: 200,
         message: 'Success',
         data,
       })),

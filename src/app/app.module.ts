@@ -10,6 +10,9 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtAuthGuard } from '../common/guards/jwt.guard';
 import { RolesGuard } from '../common/guards/role.guard';
+import { MenuModule } from '../modules/menu/menu.module';
+import { MenuVariantModule } from '../modules/menu-variant/menu-variant.module';
+import { CategoryModule } from '../modules/category/category.module';
 
 @Module({
   imports: [
@@ -92,26 +95,29 @@ import { RolesGuard } from '../common/guards/role.guard';
         },
       ],
     }),
+    CategoryModule,
+    MenuModule,
+    MenuVariantModule
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtAuthGuard,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RolesGuard,
+    // },
     // {
     //   provide: APP_GUARD,
     //   useClass: ThrottlerGuard
     // },
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerBehindProxyGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: ThrottlerBehindProxyGuard,
+    // },
   ],
 })
 export class AppModule {}

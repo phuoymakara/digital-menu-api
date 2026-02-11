@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { MenuVariantService } from './menu-variant.service';
 import { CreateMenuVariantDto } from './dto/create-menu-variant.dto';
 import { UpdateMenuVariantDto } from './dto/update-menu-variant.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('menu-variant')
 @Controller('menu-variant')
 export class MenuVariantController {
   constructor(private readonly menuVariantService: MenuVariantService) {}
@@ -13,7 +15,7 @@ export class MenuVariantController {
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.menuVariantService.findAll();
   }
 

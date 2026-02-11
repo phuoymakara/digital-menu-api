@@ -4,6 +4,7 @@ import {
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
+import { instanceToPlain } from 'class-transformer';
 import { map } from 'rxjs/operators';
 import snakecaseKeys from 'snakecase-keys';
 
@@ -13,7 +14,10 @@ export class SnakeCaseInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((data) => {
         if (!data) return data;
-        return snakecaseKeys(data, { deep: true });
+
+        const plainData = instanceToPlain(data);
+
+        return snakecaseKeys(plainData, { deep: true });
       }),
     );
   }

@@ -1,15 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
+import { Menu } from './entities/menu.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class MenuService {
+  private readonly logger = new Logger(MenuService.name);
+  constructor(
+    @InjectRepository(Menu)
+    private readonly menuRepository: Repository<Menu>,
+  ){}
+
   create(createMenuDto: CreateMenuDto) {
     return 'This action adds a new menu';
   }
 
-  findAll() {
-    return `This action returns all menu`;
+  async findAll() {
+    return await this.menuRepository.find();
   }
 
   findOne(id: number) {
