@@ -4,6 +4,12 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy,  } from 'typeorm-naming-strategies';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerBehindProxyGuard } from '../common/guards/throttler-behind-proxy.guard';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtAuthGuard } from '../common/guards/jwt.guard';
+import { RolesGuard } from '../common/guards/role.guard';
 
 @Module({
   imports: [
@@ -71,8 +77,41 @@ import { SnakeNamingStrategy,  } from 'typeorm-naming-strategies';
         */
       }),
     }),
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) =>({
+        secret: config.getOrThrow<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '1d' },
+      })
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 100,
+        },
+      ],
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: ThrottlerGuard
+    // },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerBehindProxyGuard,
+    },
+  ],
 })
 export class AppModule {}
