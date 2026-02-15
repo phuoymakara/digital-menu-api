@@ -13,7 +13,6 @@ import { MenuVariantModule } from '../modules/menu-variant/menu-variant.module';
 import { CategoryModule } from '../modules/category/category.module';
 import { FoodTypeModule } from '../modules/food-type/food-type.module';
 import { AuthModule } from '../modules/auth/auth.module';
-import { jwtConstants } from '../modules/auth/constant';
 // import { RolesGuard } from '../common/guards/role.guard';
 // import { ThrottlerBehindProxyGuard } from '../common/guards/throttler-behind-proxy.guard';
 
@@ -21,7 +20,7 @@ import { jwtConstants } from '../modules/auth/constant';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      // envFilePath: ['.env'],
+      envFilePath: ['.env'],
       // ignoreEnvFile: process.env.NODE_ENV === 'production',
     }),
     TypeOrmModule.forRootAsync({
@@ -84,9 +83,12 @@ import { jwtConstants } from '../modules/auth/constant';
         */
       }),
     }),
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '1d' },
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.getOrThrow<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '1d' },
+      }),
     }),
     ThrottlerModule.forRoot({
       throttlers: [
