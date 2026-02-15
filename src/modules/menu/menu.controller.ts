@@ -9,11 +9,6 @@ import { ApiOkResponse, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@ne
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
-  @Post()
-  create(@Body() createMenuDto: CreateMenuDto) {
-    return this.menuService.create(createMenuDto);
-  }
-
   @Get()
   @ApiOperation({ summary: 'Get all menus' }) // Description of the action
   @ApiResponse({ status: 200, description: 'Return all menus.' })
@@ -25,10 +20,12 @@ export class MenuController {
       throw new NotFoundException(error);
     }
   }
-  // @Get()
-  // findAll() {
-  //   return this.menuService.findAll();
-  // }
+    
+  /*
+  @Post()
+  create(@Body() createMenuDto: CreateMenuDto) {
+    return this.menuService.create(createMenuDto);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -44,4 +41,5 @@ export class MenuController {
   remove(@Param('id') id: string) {
     return this.menuService.remove(+id);
   }
+    */
 }

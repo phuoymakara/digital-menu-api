@@ -9,14 +9,15 @@ import { ApiTags } from '@nestjs/swagger';
 export class MenuVariantController {
   constructor(private readonly menuVariantService: MenuVariantService) {}
 
-  @Post()
-  create(@Body() createMenuVariantDto: CreateMenuVariantDto) {
-    return this.menuVariantService.create(createMenuVariantDto);
-  }
-
   @Get()
   async findAll() {
     return this.menuVariantService.findAll();
+  }
+
+  /*
+  @Post()
+  create(@Body() createMenuVariantDto: CreateMenuVariantDto) {
+    return this.menuVariantService.create(createMenuVariantDto);
   }
 
   @Get(':id')
@@ -33,4 +34,5 @@ export class MenuVariantController {
   remove(@Param('id') id: string) {
     return this.menuVariantService.remove(+id);
   }
+  */
 }

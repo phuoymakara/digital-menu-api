@@ -6,16 +6,16 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
-
+  @Get()
+  findAll() {
+    return this.categoryService.findAll();
+  }
+  /*
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
   }
 
-  @Get()
-  findAll() {
-    return this.categoryService.findAll();
-  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -31,4 +31,5 @@ export class CategoryController {
   remove(@Param('id') id: string) {
     return this.categoryService.remove(+id);
   }
+  */
 }

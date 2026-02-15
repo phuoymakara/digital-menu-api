@@ -1,15 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateFoodTypeDto } from './dto/create-food-type.dto';
 import { UpdateFoodTypeDto } from './dto/update-food-type.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { FoodType } from './entities/food-type.entity';
 
 @Injectable()
 export class FoodTypeService {
+  private readonly logger = new Logger(FoodTypeService.name);
+
+  constructor(
+    @InjectRepository(FoodType)
+    private readonly foodTypeRepository: Repository<FoodType>,
+  ){};
+
   create(createFoodTypeDto: CreateFoodTypeDto) {
     return 'This action adds a new foodType';
   }
 
-  findAll() {
-    return `This action returns all foodType`;
+  async findAll() {
+    return await this.foodTypeRepository.find()
   }
 
   findOne(id: number) {

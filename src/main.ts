@@ -18,9 +18,25 @@ async function bootstrap() {
     .setDescription('The E-Menu APIs')
     .setVersion('1.0')
     .addTag('e-menu')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT', // Optional
+        name: 'JWT',         // Name of the header
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'access_token', // This name must match the one used in the decorator
+    )
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  documentFactory.security = [{ 'access_token': [] }];
+  SwaggerModule.setup('api', app, documentFactory, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
   app.useGlobalInterceptors(
     new ResponseInterceptor(), // Formating Data Response
     new SnakeCaseInterceptor(), // Mapping snakecase for APIs Response

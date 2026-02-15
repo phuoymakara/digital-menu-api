@@ -13,6 +13,7 @@ import { RolesGuard } from '../common/guards/role.guard';
 import { MenuModule } from '../modules/menu/menu.module';
 import { MenuVariantModule } from '../modules/menu-variant/menu-variant.module';
 import { CategoryModule } from '../modules/category/category.module';
+import { FoodTypeModule } from 'src/modules/food-type/food-type.module';
 
 @Module({
   imports: [
@@ -95,6 +96,7 @@ import { CategoryModule } from '../modules/category/category.module';
         },
       ],
     }),
+    FoodTypeModule,
     CategoryModule,
     MenuModule,
     MenuVariantModule
@@ -102,10 +104,10 @@ import { CategoryModule } from '../modules/category/category.module';
   controllers: [AppController],
   providers: [
     AppService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
     // {
     //   provide: APP_GUARD,
     //   useClass: RolesGuard,
