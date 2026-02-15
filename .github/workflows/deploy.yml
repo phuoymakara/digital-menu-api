@@ -41,7 +41,7 @@ jobs:
             if pm2 list | grep -q api-digital-menu; then
               pm2 reload api-digital-menu --update-env
             else
-              pm2 start dist/main.js --name "api-digital-menu"
+              pm2 start dist/src/main.js --name "api-digital-menu"
             fi
 
             pm2 save
