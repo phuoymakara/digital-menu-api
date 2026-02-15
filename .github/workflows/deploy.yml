@@ -39,7 +39,7 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST_E_MENU }}
+          host: ${{ secrets.HOST_API_E_MENU }}
           username: ${{ secrets.USERNAME_API_E_MENU }}
           key: ${{ secrets.SSH_PRIVATE_KEY_API_E_MENU }}
           script: |
