@@ -17,8 +17,10 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Activate Yarn 4
-        run: corepack prepare yarn@4.12.0 --activate
+      - name: Activate Yarn 4 via Corepack
+        run: |
+          corepack enable
+          corepack prepare yarn@4.12.0 --activate
 
       - name: Install dependencies
         run: yarn install --immutable
