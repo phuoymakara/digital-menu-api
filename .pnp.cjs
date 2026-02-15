@@ -41,6 +41,7 @@ const RAW_RUNTIME_STATE =
           ["@nestjs/throttler", "virtual:854c99dcc00d1d38a0213626e81817b90e6c133268ded52f4e469d9ae0e05c92091068e0a8f9a154279dc3f01a41df09407e01858df28a905b89a01e655f02c1#npm:6.5.0"],\
           ["@nestjs/typeorm", "virtual:854c99dcc00d1d38a0213626e81817b90e6c133268ded52f4e469d9ae0e05c92091068e0a8f9a154279dc3f01a41df09407e01858df28a905b89a01e655f02c1#npm:11.0.0"],\
           ["@types/bcrypt", "npm:6.0.0"],\
+          ["@types/dotenv", "npm:8.2.3"],\
           ["@types/express", "npm:4.17.25"],\
           ["@types/jest", "npm:29.5.14"],\
           ["@types/node", "npm:20.19.33"],\
@@ -51,6 +52,7 @@ const RAW_RUNTIME_STATE =
           ["class-transformer", "npm:0.5.1"],\
           ["class-validator", "npm:0.14.3"],\
           ["digital-menu-api", "workspace:."],\
+          ["dotenv", "npm:17.3.1"],\
           ["eslint", "npm:8.57.1"],\
           ["eslint-config-prettier", "virtual:854c99dcc00d1d38a0213626e81817b90e6c133268ded52f4e469d9ae0e05c92091068e0a8f9a154279dc3f01a41df09407e01858df28a905b89a01e655f02c1#npm:9.1.2"],\
           ["eslint-plugin-prettier", "virtual:854c99dcc00d1d38a0213626e81817b90e6c133268ded52f4e469d9ae0e05c92091068e0a8f9a154279dc3f01a41df09407e01858df28a905b89a01e655f02c1#npm:5.5.5"],\
@@ -2251,6 +2253,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/dotenv", [\
+      ["npm:8.2.3", {\
+        "packageLocation": "../../../../../C:/Users/TUF GAMING/AppData/Local/Yarn/Berry/cache/@types-dotenv-npm-8.2.3-a2011f322f-10c0.zip/node_modules/@types/dotenv/",\
+        "packageDependencies": [\
+          ["@types/dotenv", "npm:8.2.3"],\
+          ["dotenv", "npm:17.3.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/eslint", [\
       ["npm:9.6.1", {\
         "packageLocation": "../../../../../C:/Users/TUF GAMING/AppData/Local/Yarn/Berry/cache/@types-eslint-npm-9.6.1-31a8cf74e4-10c0.zip/node_modules/@types/eslint/",\
@@ -4445,6 +4457,7 @@ const RAW_RUNTIME_STATE =
           ["@nestjs/throttler", "virtual:854c99dcc00d1d38a0213626e81817b90e6c133268ded52f4e469d9ae0e05c92091068e0a8f9a154279dc3f01a41df09407e01858df28a905b89a01e655f02c1#npm:6.5.0"],\
           ["@nestjs/typeorm", "virtual:854c99dcc00d1d38a0213626e81817b90e6c133268ded52f4e469d9ae0e05c92091068e0a8f9a154279dc3f01a41df09407e01858df28a905b89a01e655f02c1#npm:11.0.0"],\
           ["@types/bcrypt", "npm:6.0.0"],\
+          ["@types/dotenv", "npm:8.2.3"],\
           ["@types/express", "npm:4.17.25"],\
           ["@types/jest", "npm:29.5.14"],\
           ["@types/node", "npm:20.19.33"],\
@@ -4455,6 +4468,7 @@ const RAW_RUNTIME_STATE =
           ["class-transformer", "npm:0.5.1"],\
           ["class-validator", "npm:0.14.3"],\
           ["digital-menu-api", "workspace:."],\
+          ["dotenv", "npm:17.3.1"],\
           ["eslint", "npm:8.57.1"],\
           ["eslint-config-prettier", "virtual:854c99dcc00d1d38a0213626e81817b90e6c133268ded52f4e469d9ae0e05c92091068e0a8f9a154279dc3f01a41df09407e01858df28a905b89a01e655f02c1#npm:9.1.2"],\
           ["eslint-plugin-prettier", "virtual:854c99dcc00d1d38a0213626e81817b90e6c133268ded52f4e469d9ae0e05c92091068e0a8f9a154279dc3f01a41df09407e01858df28a905b89a01e655f02c1#npm:5.5.5"],\
@@ -4509,6 +4523,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../../../C:/Users/TUF GAMING/AppData/Local/Yarn/Berry/cache/dotenv-npm-17.2.3-2f9ab93ea1-10c0.zip/node_modules/dotenv/",\
         "packageDependencies": [\
           ["dotenv", "npm:17.2.3"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:17.3.1", {\
+        "packageLocation": "../../../../../C:/Users/TUF GAMING/AppData/Local/Yarn/Berry/cache/dotenv-npm-17.3.1-6ae845833c-10c0.zip/node_modules/dotenv/",\
+        "packageDependencies": [\
+          ["dotenv", "npm:17.3.1"]\
         ],\
         "linkType": "HARD"\
       }]\
