@@ -9,38 +9,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # 2️⃣ Setup Node.js 22
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "22"
 
+      # 3️⃣ Enable Corepack (required for Yarn 4)
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Install Yarn 4 (from packageManager field)
+      # 4️⃣ Activate Yarn 4 (from packageManager field)
+      - name: Activate Yarn 4
         run: corepack prepare yarn@4.12.0 --activate
 
+      # 5️⃣ Install dependencies (immutable to fail if lockfile is not up-to-date)
       - name: Install dependencies
         run: yarn install --immutable
 
+      # 6️⃣ Build the NestJS application
       - name: Build application
         run: yarn build
 
+      # 7️⃣ Deploy to server via SSH
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST_API_E_MENU }}
+          host: ${{ secrets.HOST_E_MENU }}
           username: ${{ secrets.USERNAME_API_E_MENU }}
           key: ${{ secrets.SSH_PRIVATE_KEY_API_E_MENU }}
           script: |
             set -e
             cd /home/${{ secrets.USERNAME_API_E_MENU }}/api-digital-menu/public_html
 
+            corepack enable
+            corepack prepare yarn@4.12.0 --activate
+
             git pull origin main
-            yarn install --production=false
+
+            yarn install --immutable
+
             yarn build
 
             pm2 restart api-digital-menu || pm2 start dist/main.js --name "api-digital-menu"
