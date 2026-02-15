@@ -41,7 +41,10 @@ async function bootstrap() {
     new ResponseInterceptor(), // Formating Data Response
     new SnakeCaseInterceptor(), // Mapping snakecase for APIs Response
   );
-  console.log('-----------Current JWT_SECRET----------:', process.env.JWT_SECRET);
+  console.log(
+    '-----------Current JWT_SECRET----------:',
+    process.env.JWT_SECRET,
+  );
   await app.listen(process.env.APP_PORT || 4003);
 }
 bootstrap();
