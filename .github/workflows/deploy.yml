@@ -36,16 +36,20 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY_API_E_MENU }}
           script: |
             set -e
-            cd /home/${{ secrets.USERNAME_API_E_MENU }}/api-digital-menu/public_html
+            cd /home/${{ secrets.USERNAME_API_E_MENU }}/demo-digital-menu/public_html
 
-            corepack enable
             corepack prepare yarn@4.12.0 --activate
 
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
 
-            yarn install --immutable
-
+            yarn install --immutable --production
             yarn build
 
-            pm2 restart api-digital-menu || pm2 start dist/main.js --name "api-digital-menu"
+            if pm2 list | grep -q demo-digital-menu; then
+              pm2 reload demo-digital-menu --update-env
+            else
+              pm2 start dist/main.js --name "demo-digital-menu"
+            fi
+
             pm2 save
