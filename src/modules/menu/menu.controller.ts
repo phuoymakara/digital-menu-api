@@ -1,26 +1,47 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  NotFoundException,
+} from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
-import { ApiOkResponse, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { Public } from '../../common/decorators/auth.decorator';
+import { PaginationDto } from '../../common/pagination/pagination.dto';
 
-@ApiTags('Menu') 
+@ApiBearerAuth('access_token')
+@ApiTags('Menu')
 @Controller('menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
+  @Public()
   @Get()
   @ApiOperation({ summary: 'Get all menus' }) // Description of the action
   @ApiResponse({ status: 200, description: 'Return all menus.' })
-  async findAll() {
-    try{
-      const menus = await this.menuService.findAll();
+  async findAll(@Query() paginationDto: PaginationDto) {
+    try {
+      const menus = await this.menuService.findAll(paginationDto);
       return menus;
-    }catch(error){
+    } catch (error) {
       throw new NotFoundException(error);
     }
   }
-    
+
   /*
   @Post()
   create(@Body() createMenuDto: CreateMenuDto) {

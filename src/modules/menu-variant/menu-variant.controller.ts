@@ -1,9 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { MenuVariantService } from './menu-variant.service';
 import { CreateMenuVariantDto } from './dto/create-menu-variant.dto';
 import { UpdateMenuVariantDto } from './dto/update-menu-variant.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth('access_token')
 @ApiTags('menu-variant')
 @Controller('menu-variant')
 export class MenuVariantController {

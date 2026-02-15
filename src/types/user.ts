@@ -14,4 +14,3 @@ export class UserResponseDto {
   role: string;
   createdAt: Date;
 }
-

@@ -1,4 +1,4 @@
-import { User,UserResponseDto } from '../../types/user';
+import { User, UserResponseDto } from '../../types/user';
 
 export class UserMapper {
   static toResponse(user: User): UserResponseDto {

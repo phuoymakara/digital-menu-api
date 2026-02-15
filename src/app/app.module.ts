@@ -3,17 +3,19 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SnakeNamingStrategy,  } from 'typeorm-naming-strategies';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerBehindProxyGuard } from '../common/guards/throttler-behind-proxy.guard';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtAuthGuard } from '../common/guards/jwt.guard';
-import { RolesGuard } from '../common/guards/role.guard';
 import { MenuModule } from '../modules/menu/menu.module';
 import { MenuVariantModule } from '../modules/menu-variant/menu-variant.module';
 import { CategoryModule } from '../modules/category/category.module';
-import { FoodTypeModule } from 'src/modules/food-type/food-type.module';
+import { FoodTypeModule } from '../modules/food-type/food-type.module';
+import { AuthModule } from '../modules/auth/auth.module';
+// import { RolesGuard } from '../common/guards/role.guard';
+// import { ThrottlerBehindProxyGuard } from '../common/guards/throttler-behind-proxy.guard';
+
 
 @Module({
   imports: [
@@ -32,7 +34,7 @@ import { FoodTypeModule } from 'src/modules/food-type/food-type.module';
         database: config.getOrThrow<string>('DB_NAME'),
         synchronize: config.get<boolean>('DB_SYNC') || false,
         autoLoadEntities: true,
-        logging: config.get('DB_LOGGING') === 'true',  // Enable logging by env
+        logging: config.get('DB_LOGGING') === 'true', // Enable logging by env
         charset: 'utf8mb4', // Charset for Khmer / Emoji safe
         timezone: 'Z', // Prevent timezone shifting issues
         retryAttempts: 5, // Retry if DB not ready (Docker / Cloud)
@@ -48,7 +50,7 @@ import { FoodTypeModule } from 'src/modules/food-type/food-type.module';
         cache: {
           duration: Number(config.get('DB_CACHE_TTL', 30000)), // ms
         },
-        isolation: 'READ COMMITTED',  // Transaction isolation
+        isolation: 'READ COMMITTED', // Transaction isolation
         namingStrategy: new SnakeNamingStrategy(),
         ssl:
           config.get<string>('DB_SSL') === 'true'
@@ -83,23 +85,24 @@ import { FoodTypeModule } from 'src/modules/food-type/food-type.module';
     }),
     JwtModule.registerAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) =>({
+      useFactory: (config: ConfigService) => ({
         secret: config.getOrThrow<string>('JWT_SECRET'),
         signOptions: { expiresIn: '1d' },
-      })
+      }),
     }),
     ThrottlerModule.forRoot({
       throttlers: [
         {
           ttl: 60000,
-          limit: 100,
+          limit: 10,
         },
       ],
     }),
+    AuthModule,
     FoodTypeModule,
     CategoryModule,
     MenuModule,
-    MenuVariantModule
+    MenuVariantModule,
   ],
   controllers: [AppController],
   providers: [
@@ -108,17 +111,17 @@ import { FoodTypeModule } from 'src/modules/food-type/food-type.module';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: RolesGuard,
-    // },
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: ThrottlerGuard
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
     // {
     //   provide: APP_GUARD,
     //   useClass: ThrottlerBehindProxyGuard,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RolesGuard,
     // },
   ],
 })

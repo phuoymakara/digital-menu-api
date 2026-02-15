@@ -20,53 +20,77 @@ async function seed() {
   }
 
   // 2️⃣ Categories
-  const drinks = await AppDataSource.manager.save(Object.assign(new Category(), { name: 'Drinks', slug: 'drinks' }));
-  const coffee = await AppDataSource.manager.save(Object.assign(new Category(), { name: 'Coffee', slug: 'coffee', parent: drinks }));
-  const juice = await AppDataSource.manager.save(Object.assign(new Category(), { name: 'Juice', slug: 'juice', parent: drinks }));
-  const desserts = await AppDataSource.manager.save(Object.assign(new Category(), { name: 'Desserts', slug: 'desserts' }));
+  const drinks = await AppDataSource.manager.save(
+    Object.assign(new Category(), { name: 'Drinks', slug: 'drinks' }),
+  );
+  const coffee = await AppDataSource.manager.save(
+    Object.assign(new Category(), {
+      name: 'Coffee',
+      slug: 'coffee',
+      parent: drinks,
+    }),
+  );
+  const juice = await AppDataSource.manager.save(
+    Object.assign(new Category(), {
+      name: 'Juice',
+      slug: 'juice',
+      parent: drinks,
+    }),
+  );
+  const desserts = await AppDataSource.manager.save(
+    Object.assign(new Category(), { name: 'Desserts', slug: 'desserts' }),
+  );
 
   // 3️⃣ Realistic Mock Data
   const menuMockData = [
     {
       name: 'Caramel Macchiato',
-      description: 'Freshly steamed milk with vanilla-flavored syrup marked with espresso.',
-      image: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=640',
+      description:
+        'Freshly steamed milk with vanilla-flavored syrup marked with espresso.',
+      image:
+        'https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=640',
       category: coffee,
       foodType: foodTypeMap['Drinks'],
-      prices: [4.5, 5.5, 6.5]
+      prices: [4.5, 5.5, 6.5],
     },
     {
       name: 'Fresh Orange Juice',
       description: '100% Squeezed Valencia oranges, served chilled.',
-      image: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?w=640',
+      image:
+        'https://images.unsplash.com/photo-1613478223719-2ab802602423?w=640',
       category: juice,
       foodType: foodTypeMap['Drinks'],
-      prices: [3.5, 4.5, 5.5]
+      prices: [3.5, 4.5, 5.5],
     },
     {
       name: 'New York Cheesecake',
       description: 'Rich, creamy cheesecake with a graham cracker crust.',
-      image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=640',
+      image:
+        'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=640',
       category: desserts,
       foodType: foodTypeMap['Snacks'],
-      prices: [6.0, 7.5, 9.0]
+      prices: [6.0, 7.5, 9.0],
     },
     {
       name: 'Iced Americano',
-      description: 'Espresso shots topped with cold water to produce a light layer of crema.',
-      image: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=640',
+      description:
+        'Espresso shots topped with cold water to produce a light layer of crema.',
+      image:
+        'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=640',
       category: coffee,
       foodType: foodTypeMap['Drinks'],
-      prices: [3.0, 4.0, 5.0]
+      prices: [3.0, 4.0, 5.0],
     },
     {
       name: 'Chocolate Lava Cake',
-      description: 'Warm chocolate cake with a molten center, served with vanilla ice cream.',
-      image: 'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=640',
+      description:
+        'Warm chocolate cake with a molten center, served with vanilla ice cream.',
+      image:
+        'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=640',
       category: desserts,
       foodType: foodTypeMap['Snacks'],
-      prices: [8.5, 10.0, 12.0]
-    }
+      prices: [8.5, 10.0, 12.0],
+    },
   ];
 
   // 4️⃣ Insert Menus and Variants

@@ -13,7 +13,7 @@ export class SnakeCaseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler) {
     return next.handle().pipe(
       map((data) => {
-        if (!data || typeof(data)!=="object") return data;
+        if (!data || typeof data !== 'object') return data;
 
         const plainData = instanceToPlain(data);
 

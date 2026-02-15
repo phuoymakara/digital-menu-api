@@ -1,10 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { FoodTypeService } from './food-type.service';
 import { CreateFoodTypeDto } from './dto/create-food-type.dto';
 import { UpdateFoodTypeDto } from './dto/update-food-type.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@ApiTags("Food Type")
+@ApiBearerAuth('access_token')
+@ApiTags('Food Type')
 @Controller('food-type')
 export class FoodTypeController {
   constructor(private readonly foodTypeService: FoodTypeService) {}
@@ -13,7 +22,7 @@ export class FoodTypeController {
   findAll() {
     return this.foodTypeService.findAll();
   }
-/*
+  /*
   @Post()
   create(@Body() createFoodTypeDto: CreateFoodTypeDto) {
     return this.foodTypeService.create(createFoodTypeDto);

@@ -4,7 +4,7 @@ import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 export class LoginAuthDto {
   @ApiProperty({
     description: 'The registered email address of the user',
-    example: 'user@example.com',
+    example: 'xiexieni@gmail.com',
   })
   @IsEmail({}, { message: 'Please provide a valid email address' })
   @IsNotEmpty()
@@ -12,7 +12,7 @@ export class LoginAuthDto {
 
   @ApiProperty({
     description: 'The account password',
-    example: 'StrongPass123!',
+    example: 'Xieni123!',
     minLength: 8,
     format: 'password', // This hides the characters in the Swagger UI
   })

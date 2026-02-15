@@ -7,11 +7,11 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class MenuVariantService {
-    private readonly logger = new Logger(MenuVariantService.name);
-    constructor(
-      @InjectRepository(MenuVariant)
-      private readonly menuVariantRepository: Repository<MenuVariant>,
-    ){}
+  private readonly logger = new Logger(MenuVariantService.name);
+  constructor(
+    @InjectRepository(MenuVariant)
+    private readonly menuVariantRepository: Repository<MenuVariant>,
+  ) {}
   create(createMenuVariantDto: CreateMenuVariantDto) {
     return 'This action adds a new menuVariant';
   }

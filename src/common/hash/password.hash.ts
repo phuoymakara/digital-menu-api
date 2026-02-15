@@ -7,7 +7,7 @@ export class HashHelper {
    * Hashes a plain text string
    * @param data - The string to hash (e.g., a password)
    */
-  static encrypt(data: string): string{
+  static encrypt(data: string): string {
     return bcrypt.hashSync(data, this.SALT_ROUNDS);
   }
 

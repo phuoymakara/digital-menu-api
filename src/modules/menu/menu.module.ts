@@ -8,11 +8,9 @@ import { Category } from '../category/entities/category.entity';
 import { MenuVariant } from '../menu-variant/entities/menu-variant.entity';
 
 @Module({
-  imports:[
-    TypeOrmModule.forFeature([Menu, FoodType, Category, MenuVariant]),
-  ],
+  imports: [TypeOrmModule.forFeature([Menu, FoodType, Category, MenuVariant])],
   controllers: [MenuController],
   providers: [MenuService],
-  exports: [MenuService]
+  exports: [MenuService],
 })
 export class MenuModule {}

@@ -1,14 +1,31 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  NotFoundException,
+} from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth('access_token')
+@ApiTags('Menu Category')
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
   @Get()
-  findAll() {
-    return this.categoryService.findAll();
+  async findAll() {
+    try {
+      const cats = await this.categoryService.findAll();
+      return cats;
+    } catch (error) {
+      throw new NotFoundException(error);
+    }
   }
   /*
   @Post()

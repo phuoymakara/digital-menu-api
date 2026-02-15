@@ -12,14 +12,14 @@ export class FoodTypeService {
   constructor(
     @InjectRepository(FoodType)
     private readonly foodTypeRepository: Repository<FoodType>,
-  ){};
+  ) {}
 
   create(createFoodTypeDto: CreateFoodTypeDto) {
     return 'This action adds a new foodType';
   }
 
   async findAll() {
-    return await this.foodTypeRepository.find()
+    return await this.foodTypeRepository.find();
   }
 
   findOne(id: number) {

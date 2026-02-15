@@ -7,18 +7,18 @@ export class MenuVariant {
   id: number;
 
   @Column()
-  label: string; 
+  label: string;
   // Small / Medium / Large / 500g / 6pcs
 
   @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
   @Column({ nullable: true })
-  unit: string; 
+  unit: string;
   // size / weight / pieces
 
   @Column({ nullable: true })
-  value: string; 
+  value: string;
   // 500, 6, Large
 
   @ManyToOne(() => Menu, (menu) => menu.variants, {

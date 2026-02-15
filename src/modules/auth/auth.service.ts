@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
@@ -7,37 +7,37 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   constructor(private jwtService: JwtService) {}
 
-  // This hash is for the password: "Password123!"
+  // This hash is for the password: "Xieni123!"
   private readonly MOCK_USER = {
     id: 1,
-    email: 'admin@example.com',
-    passwordHash: '$2b$10$7p6pGjX7kK.fQZ.pA7/UeO3U9y8W9zV5m9Q8R7S6T5U4V3W2X1Y0Z', 
+    email: 'xiexieni@gmail.com',
+    passwordHash:
+      '$2b$12$8y/HqT2rvd15LUskJxT1..dDYEJzQrGAuYj6Hes/ZWXpLCHrbS2TS',
   };
 
   async login(payload: LoginAuthDto) {
     const { email, password } = payload;
-
+    this.logger.debug(`==== User ${email} ====> Attemp to login....`);
     if (email !== this.MOCK_USER.email) {
       throw new UnauthorizedException('Invalid credentials');
     }
-
-    const isPasswordValid = HashHelper.compare(password, this.MOCK_USER.passwordHash);
-
+    const isPasswordValid = HashHelper.compare(
+      password,
+      this.MOCK_USER.passwordHash,
+    );
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
+    const userVerified = await this.generateTokens(
+      this.MOCK_USER.id,
+      this.MOCK_USER.email,
+    );
+    this.logger.debug(`==== USER VERIFIED ====`, { ...userVerified });
 
-    // Create the JWT payload
-    const jwtPayload = { 
-      sub: this.MOCK_USER.id, 
-      email: this.MOCK_USER.email 
-    };
-
-    return {
-      access_token: await this.jwtService.signAsync(jwtPayload),
-    };
+    return userVerified;
   }
 
   create(createAuthDto: CreateAuthDto) {
@@ -58,5 +58,28 @@ export class AuthService {
 
   remove(id: number) {
     return `This action removes a #${id} auth`;
+  }
+
+  // Private method to generate access & refresh tokens
+  private async generateTokens(userId: number, email: string) {
+    const payload = {
+      sub: userId,
+      email,
+    };
+
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(payload, {
+        expiresIn: '15m',
+      }),
+      this.jwtService.signAsync(payload, {
+        expiresIn: '7d',
+      }),
+    ]);
+
+    return {
+      user: { email },
+      accessToken,
+      refreshToken,
+    };
   }
 }

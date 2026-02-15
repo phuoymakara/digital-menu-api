@@ -12,8 +12,8 @@ async function bootstrap() {
       disableErrorMessages: false,
     }),
   );
-  app.enableCors(); 
-   const config = new DocumentBuilder()
+  app.enableCors();
+  const config = new DocumentBuilder()
     .setTitle('E-Menu APIs')
     .setDescription('The E-Menu APIs')
     .setVersion('1.0')
@@ -23,7 +23,7 @@ async function bootstrap() {
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT', // Optional
-        name: 'JWT',         // Name of the header
+        name: 'JWT', // Name of the header
         description: 'Enter JWT token',
         in: 'header',
       },
@@ -31,7 +31,7 @@ async function bootstrap() {
     )
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  documentFactory.security = [{ 'access_token': [] }];
+  documentFactory.security = [{ access_token: [] }];
   SwaggerModule.setup('api', app, documentFactory, {
     swaggerOptions: {
       persistAuthorization: true,
