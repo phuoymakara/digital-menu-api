@@ -17,13 +17,8 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Activate Yarn 4 via Corepack
-        run: |
-          corepack enable
-          corepack prepare yarn@4.12.0 --activate
-
       - name: Install dependencies
-        run: yarn install --immutable
+        run: yarn install --frozen-lockfile
 
       - name: Build application
         run: yarn build
@@ -38,12 +33,10 @@ jobs:
             set -e
             cd /home/${{ secrets.USERNAME_API_E_MENU }}/demo-digital-menu/public_html
 
-            corepack prepare yarn@4.12.0 --activate
-
             git fetch origin main
-            git reset --hard origin/main
+            git pull origin main
 
-            yarn install --immutable --production
+            yarn install --frozen-lockfile --productionn
             yarn build
 
             if pm2 list | grep -q demo-digital-menu; then
