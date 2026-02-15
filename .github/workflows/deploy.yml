@@ -1,0 +1,42 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build application
+        run: yarn build
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_API_E_MENU }}
+          username: ${{ secrets.USERNAME_API_E_MENU }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_API_E_MENU }}
+          script: |
+            set -e
+            cd /home/${{ secrets.USERNAME_API_E_MENU }}/api-digital-menu/public_html
+
+            git pull origin main
+            yarn install --production=false
+            yarn build
+
+            pm2 restart api-digital-menu || pm2 start dist/main.js --name "api-digital-menu"
+            pm2 save
