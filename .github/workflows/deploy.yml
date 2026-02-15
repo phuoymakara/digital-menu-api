@@ -35,7 +35,6 @@ jobs:
 
             git fetch origin main
             git pull origin main
-
             yarn install --frozen-lockfile --productionn
             yarn build
 
