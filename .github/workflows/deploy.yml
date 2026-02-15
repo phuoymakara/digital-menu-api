@@ -31,17 +31,17 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY_API_E_MENU }}
           script: |
             set -e
-            cd /home/${{ secrets.USERNAME_API_E_MENU }}/demo-digital-menu/public_html
+            cd /home/${{ secrets.USERNAME_API_E_MENU }}/api-digital-menu/public_html
 
             git fetch origin main
             git pull origin main
             yarn install --frozen-lockfile --productionn
             yarn build
 
-            if pm2 list | grep -q demo-digital-menu; then
-              pm2 reload demo-digital-menu --update-env
+            if pm2 list | grep -q api-digital-menu; then
+              pm2 reload api-digital-menu --update-env
             else
-              pm2 start dist/main.js --name "demo-digital-menu"
+              pm2 start dist/main.js --name "api-digital-menu"
             fi
 
             pm2 save
