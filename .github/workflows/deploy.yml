@@ -19,6 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile
 
       - name: Build application
         run: yarn build
@@ -32,11 +33,20 @@ jobs:
           script: |
             set -e
             cd /home/${{ secrets.USERNAME_API_E_MENU }}/demo-digital-menu/public_html
+            cd /home/${{ secrets.USERNAME_API_E_MENU }}/demo-digital-menu/public_html
 
+            git fetch origin main
             git fetch origin main
             git pull origin main
             yarn install --frozen-lockfile --productionn
+            yarn install --frozen-lockfile --productionn
             yarn build
+
+            if pm2 list | grep -q demo-digital-menu; then
+              pm2 reload demo-digital-menu --update-env
+            else
+              pm2 start dist/main.js --name "demo-digital-menu"
+            fi
 
             if pm2 list | grep -q demo-digital-menu; then
               pm2 reload demo-digital-menu --update-env
