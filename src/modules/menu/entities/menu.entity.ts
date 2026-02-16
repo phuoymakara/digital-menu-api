@@ -10,7 +10,16 @@ import {
 import { FoodType } from '../../food-type/entities/food-type.entity';
 import { Category } from '../../category/entities/category.entity';
 import { MenuVariant } from '../../menu-variant/entities/menu-variant.entity';
+import { Exclude, Expose } from 'class-transformer';
 
+export class ColumnNumericTransformer {
+  to(data: number): number {
+    return data;
+  }
+  from(data: string): number {
+    return parseFloat(data); // Converts database string back to JS number
+  }
+}
 @Entity('menus')
 export class Menu {
   @PrimaryGeneratedColumn()
@@ -19,11 +28,20 @@ export class Menu {
   @Column({ length: 150 })
   name: string;
 
+  @Exclude()
   @Column({ type: 'text', nullable: true })
   description: string;
 
   @Column({ nullable: true })
   image: string;
+
+  @Column('decimal', { 
+      nullable: true, 
+      precision: 10, 
+      scale: 2 ,
+      transformer: new ColumnNumericTransformer() 
+  })
+  price: number;
 
   @ManyToOne(() => FoodType, (type) => type.menus)
   foodType: FoodType;
@@ -41,3 +59,4 @@ export class Menu {
   })
   variants: MenuVariant[];
 }
+

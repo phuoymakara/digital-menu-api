@@ -1,6 +1,6 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app/app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './common/http/response-interceptor';
 import { SnakeCaseInterceptor } from './common/http/snakecase-filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -40,10 +40,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(
     new ResponseInterceptor(), // Formating Data Response
     new SnakeCaseInterceptor(), // Mapping snakecase for APIs Response
-  );
-  console.log(
-    '-----------Current JWT_SECRET----------:',
-    process.env.JWT_SECRET,
+    new ClassSerializerInterceptor(app.get(Reflector))
   );
   await app.listen(process.env.APP_PORT || 4003);
 }
