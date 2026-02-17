@@ -4,6 +4,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
 import { DataSource, Repository } from 'typeorm';
+import { Menu } from '../menu/entities/menu.entity';
 
 @Injectable()
 export class CategoryService {
@@ -14,6 +15,9 @@ export class CategoryService {
 
     @InjectDataSource()
     private readonly dataSource: DataSource,
+
+    @InjectRepository(Menu)
+    private readonly menuRepository: Repository<Menu>,
   ) {}
 
   async create(dto: CreateCategoryDto) {
@@ -45,6 +49,57 @@ export class CategoryService {
     const tree = await treeRepo.findDescendantsTree(root);
 
     return tree;
+  }
+
+  async getRootCategories() {
+    return this.categoryRepository.find({
+      where: { parent: null },
+    });
+  }
+
+  /**
+   * Includes:
+   * - children categories (sub-categories)
+   * - menus under this category and optionally filter by sub-categories
+   */
+  async browseCategory(
+    categoryId: number,
+    subCategoryIds?: number[],
+    search?: string,
+  ) {
+    const category = await this.categoryRepository.findOne({
+      where: { id: categoryId },
+    });
+
+    if (!category) throw new NotFoundException('Category not found');
+
+    // Load children categories for filter options
+    const children = await this.categoryRepository.find({
+      where: { parent: { id: categoryId } },
+    });
+
+    // Collect category IDs for menu filtering
+    const filterCategoryIds = subCategoryIds?.length
+      ? subCategoryIds
+      : [categoryId, ...children.map((c) => c.id)];
+
+    // Query menus
+    const qb = this.menuRepository
+      .createQueryBuilder('menu')
+      .leftJoinAndSelect('menu.categories', 'category')
+      .where('category.id IN (:...ids)', { ids: filterCategoryIds });
+
+    if (search) {
+      qb.andWhere('menu.name LIKE :search', { search: `%${search}%` });
+    }
+
+    const menus = await qb.getMany();
+
+    return {
+      category,
+      subCategories: children,
+      menus,
+    };
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {

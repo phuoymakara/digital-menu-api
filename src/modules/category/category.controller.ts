@@ -7,15 +7,17 @@ import {
   Param,
   Delete,
   NotFoundException,
+  ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth('access_token')
-@ApiTags('Menu Category')
-@Controller('category')
+@ApiTags('Category')
+@Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
   @Get()
@@ -36,6 +38,48 @@ export class CategoryController {
       throw new NotFoundException(error);
     }
   }
+
+  @Get('roots')
+  @ApiOperation({ summary: 'Get all root/main categories' })
+  getRootCategories() {
+    try {
+      return this.categoryService.getRootCategories();
+    } catch (error) {
+      throw new NotFoundException(error);
+    }
+  }
+
+  @Get(':id/browse')
+  @ApiOperation({ summary: 'Browse a category, its sub-categories and menus' })
+  @ApiParam({ name: 'id', description: 'ID of the category to browse', type: Number })
+  @ApiQuery({
+    name: 'subCategories',
+    description: 'Comma-separated IDs of sub-categories to filter menus',
+    required: false,
+    example: '10,11',
+  })
+  @ApiQuery({
+    name: 'search',
+    description: 'Search string to filter menus by name',
+    required: false,
+    example: 'americano',
+  })
+  async browse(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('subCategories') subCategories?: string,
+    @Query('search') search?: string,
+  ) {
+    try{
+      const subCategoryIds = subCategories
+        ? subCategories.split(',').map(Number)
+        : undefined;
+
+      return await this.categoryService.browseCategory(id, subCategoryIds, search);
+    }catch(error){
+      throw new NotFoundException(error);
+    }
+  }
+
   /*
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {

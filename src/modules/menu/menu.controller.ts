@@ -24,8 +24,8 @@ import { Public } from '../../common/decorators/auth.decorator';
 import { PaginationDto } from '../../common/pagination/pagination.dto';
 
 @ApiBearerAuth('access_token')
-@ApiTags('Menu')
-@Controller('menu')
+@ApiTags('Menus')
+@Controller('menus')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
