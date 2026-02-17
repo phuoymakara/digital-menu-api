@@ -16,7 +16,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth('access_token')
-@ApiTags('Category')
+@ApiTags('Categories')
 @Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
@@ -79,7 +79,7 @@ export class CategoryController {
       throw new NotFoundException(error);
     }
   }
-
+  
   /*
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
