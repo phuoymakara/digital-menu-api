@@ -18,11 +18,11 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class FoodTypeController {
   constructor(private readonly foodTypeService: FoodTypeService) {}
 
+  /*
   @Get()
   findAll() {
     return this.foodTypeService.findAll();
   }
-  /*
   @Post()
   create(@Body() createFoodTypeDto: CreateFoodTypeDto) {
     return this.foodTypeService.create(createFoodTypeDto);

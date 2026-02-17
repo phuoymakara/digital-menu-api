@@ -30,7 +30,12 @@ export class CategoryService {
     return this.categoryRepository.save(category);
   }
 
-  async findAll() {
+  async findAll(rootOnly?: boolean) {
+    if (rootOnly) {
+      return await this.categoryRepository.find({
+        where: { parent: null },
+      });
+    }
     return await this.categoryRepository.find();
   }
 
@@ -52,9 +57,7 @@ export class CategoryService {
   }
 
   async getRootCategories() {
-    return this.categoryRepository.find({
-      where: { parent: null },
-    });
+    return await this.categoryRepository.find();
   }
 
   /**

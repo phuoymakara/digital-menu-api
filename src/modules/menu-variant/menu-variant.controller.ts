@@ -13,7 +13,7 @@ import { UpdateMenuVariantDto } from './dto/update-menu-variant.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth('access_token')
-@ApiTags('menu-variant')
+@ApiTags('Menu Variant')
 @Controller('menu-variant')
 export class MenuVariantController {
   constructor(private readonly menuVariantService: MenuVariantService) {}

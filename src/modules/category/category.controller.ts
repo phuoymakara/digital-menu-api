@@ -9,6 +9,7 @@ import {
   NotFoundException,
   ParseIntPipe,
   Query,
+  Logger,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -19,11 +20,24 @@ import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestj
 @ApiTags('Categories')
 @Controller('categories')
 export class CategoryController {
+  private readonly logger = new Logger(CategoryController.name);
+  
   constructor(private readonly categoryService: CategoryService) {}
+
   @Get()
-  async findAll() {
+  @ApiOperation({ summary: 'Get all categories (optionally only root categories)' })
+  @ApiQuery({
+    name: 'rootOnly',
+    required: false,
+    type: Boolean,
+    description: 'If true, only return root categories (parent = null)',
+    example: true,
+  })
+  async findAll(@Query('rootOnly') rootOnly?: string) {
     try {
-      const cats = await this.categoryService.findAll();
+      // Convert query param to boolean
+      const isRootOnly = rootOnly === 'true' || Boolean(rootOnly) === true;
+      const cats = await this.categoryService.findAll(isRootOnly);
       return cats;
     } catch (error) {
       throw new NotFoundException(error);
@@ -34,16 +48,6 @@ export class CategoryController {
   async findOne(@Param('id') id: string) {
     try {
       return await this.categoryService.findOne(+id);
-    } catch (error) {
-      throw new NotFoundException(error);
-    }
-  }
-
-  @Get('roots')
-  @ApiOperation({ summary: 'Get all root/main categories' })
-  getRootCategories() {
-    try {
-      return this.categoryService.getRootCategories();
     } catch (error) {
       throw new NotFoundException(error);
     }
