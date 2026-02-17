@@ -35,11 +35,11 @@ export class Menu {
   @Column({ nullable: true })
   image: string;
 
-  @Column('decimal', { 
-      nullable: true, 
-      precision: 10, 
-      scale: 2 ,
-      transformer: new ColumnNumericTransformer() 
+  @Column('decimal', {
+    nullable: true,
+    precision: 10,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
   })
   price: number;
 
@@ -59,4 +59,3 @@ export class Menu {
   })
   variants: MenuVariant[];
 }
-

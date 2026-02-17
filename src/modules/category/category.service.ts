@@ -1,9 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class CategoryService {
@@ -11,18 +11,40 @@ export class CategoryService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
+
+    @InjectDataSource()
+    private readonly dataSource: DataSource,
   ) {}
 
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+  async create(dto: CreateCategoryDto) {
+    const category = this.categoryRepository.create({
+      name: dto.name,
+      slug: dto.slug,
+      parent: dto.parentId ? { id: dto.parentId } : null,
+    });
+
+    return this.categoryRepository.save(category);
   }
 
   async findAll() {
     return await this.categoryRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: number) {
+     const treeRepo = this.dataSource.getTreeRepository(Category);
+
+    const root = await treeRepo.findOne({
+      where: { id },
+      relations: ['menus'], // load menus of root
+    });
+
+    if (!root) {
+      throw new NotFoundException(`Category with ID ${id} not found`);
+    }
+
+    const tree = await treeRepo.findDescendantsTree(root);
+
+    return tree;
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {

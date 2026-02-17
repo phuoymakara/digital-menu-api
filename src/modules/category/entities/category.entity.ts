@@ -5,9 +5,12 @@ import {
   ManyToOne,
   OneToMany,
   ManyToMany,
+  Tree,
+  TreeParent,
+  TreeChildren,
 } from 'typeorm';
 import { Menu } from '../../menu/entities/menu.entity';
-
+@Tree('closure-table')
 @Entity('categories')
 export class Category {
   @PrimaryGeneratedColumn()
@@ -19,11 +22,11 @@ export class Category {
   @Column({ unique: true })
   slug: string;
 
-  @ManyToOne(() => Category, (cat) => cat.children, { nullable: true })
-  parent: Category;
+  @TreeParent()
+  parent?: Category;  // One parent (nullable for root)
 
-  @OneToMany(() => Category, (cat) => cat.parent)
-  children: Category[];
+  @TreeChildren()
+  children?: Category[];  // Many children
 
   @ManyToMany(() => Menu, (menu) => menu.categories)
   menus: Menu[];

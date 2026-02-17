@@ -12,8 +12,17 @@ export class MenuVariantService {
     @InjectRepository(MenuVariant)
     private readonly menuVariantRepository: Repository<MenuVariant>,
   ) {}
-  create(createMenuVariantDto: CreateMenuVariantDto) {
-    return 'This action adds a new menuVariant';
+
+  async create(dto: CreateMenuVariantDto) {
+    const variant = this.menuVariantRepository.create({
+      label: dto.label,
+      price: dto.price,
+      unit: dto.unit,
+      value: dto.value,
+      menu: { id: dto.menuId },
+    });
+
+    return this.menuVariantRepository.save(variant);
   }
 
   async findAll() {

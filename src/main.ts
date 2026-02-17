@@ -40,7 +40,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(
     new ResponseInterceptor(), // Formating Data Response
     new SnakeCaseInterceptor(), // Mapping snakecase for APIs Response
-    new ClassSerializerInterceptor(app.get(Reflector))
+    new ClassSerializerInterceptor(app.get(Reflector)),
   );
   await app.listen(process.env.APP_PORT || 4003);
 }

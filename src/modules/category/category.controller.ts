@@ -27,16 +27,19 @@ export class CategoryController {
       throw new NotFoundException(error);
     }
   }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.categoryService.findOne(+id);
+    } catch (error) {
+      throw new NotFoundException(error);
+    }
+  }
   /*
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
-  }
-
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoryService.findOne(+id);
   }
 
   @Patch(':id')
