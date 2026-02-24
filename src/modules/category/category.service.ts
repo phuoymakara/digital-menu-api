@@ -40,7 +40,7 @@ export class CategoryService {
   }
 
   async findOne(id: number) {
-     const treeRepo = this.dataSource.getTreeRepository(Category);
+    const treeRepo = this.dataSource.getTreeRepository(Category);
 
     const root = await treeRepo.findOne({
       where: { id },

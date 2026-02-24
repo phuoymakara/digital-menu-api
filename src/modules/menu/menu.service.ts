@@ -20,7 +20,7 @@ export class MenuService extends BasePaginationService {
   private readonly logger = new Logger(MenuService.name);
   constructor(
     private readonly dataSource: DataSource,
-    
+
     @InjectRepository(Menu)
     private readonly menuRepository: Repository<Menu>,
 
@@ -88,8 +88,7 @@ export class MenuService extends BasePaginationService {
 
     const qb = this.menuRepository
       .createQueryBuilder('menu')
-      .leftJoinAndSelect('menu.variants', 'variants')
-      .leftJoinAndSelect('menu.foodType', 'foodType');
+      .leftJoinAndSelect('menu.variants', 'variants');
 
     // // SEARCH (multi column)
     // if (search) {

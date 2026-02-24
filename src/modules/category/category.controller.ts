@@ -14,18 +14,26 @@ import {
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiBearerAuth('access_token')
 @ApiTags('Categories')
 @Controller('categories')
 export class CategoryController {
   private readonly logger = new Logger(CategoryController.name);
-  
+
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all categories (optionally only root categories)' })
+  @ApiOperation({
+    summary: 'Get all categories (optionally only root categories)',
+  })
   @ApiQuery({
     name: 'rootOnly',
     required: false,
@@ -55,7 +63,11 @@ export class CategoryController {
 
   @Get(':id/browse')
   @ApiOperation({ summary: 'Browse a category, its sub-categories and menus' })
-  @ApiParam({ name: 'id', description: 'ID of the category to browse', type: Number })
+  @ApiParam({
+    name: 'id',
+    description: 'ID of the category to browse',
+    type: Number,
+  })
   @ApiQuery({
     name: 'subCategories',
     description: 'Comma-separated IDs of sub-categories to filter menus',
@@ -73,17 +85,21 @@ export class CategoryController {
     @Query('subCategories') subCategories?: string,
     @Query('search') search?: string,
   ) {
-    try{
+    try {
       const subCategoryIds = subCategories
         ? subCategories.split(',').map(Number)
         : undefined;
 
-      return await this.categoryService.browseCategory(id, subCategoryIds, search);
-    }catch(error){
+      return await this.categoryService.browseCategory(
+        id,
+        subCategoryIds,
+        search,
+      );
+    } catch (error) {
       throw new NotFoundException(error);
     }
   }
-  
+
   /*
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {

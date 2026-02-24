@@ -23,10 +23,10 @@ export class Category {
   slug: string;
 
   @TreeParent()
-  parent?: Category;  // One parent (nullable for root)
+  parent?: Category; // One parent (nullable for root)
 
   @TreeChildren()
-  children?: Category[];  // Many children
+  children?: Category[]; // Many children
 
   @ManyToMany(() => Menu, (menu) => menu.categories)
   menus: Menu[];

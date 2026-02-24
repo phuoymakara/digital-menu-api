@@ -13,9 +13,11 @@ import { MenuVariantModule } from '../modules/menu-variant/menu-variant.module';
 import { CategoryModule } from '../modules/category/category.module';
 import { FoodTypeModule } from '../modules/food-type/food-type.module';
 import { AuthModule } from '../modules/auth/auth.module';
+import { readFileSync } from 'fs';
 // import { RolesGuard } from '../common/guards/role.guard';
 // import { ThrottlerBehindProxyGuard } from '../common/guards/throttler-behind-proxy.guard';
-
+const privateKey = readFileSync('jwt-private.key', 'utf8');
+const publicKey = readFileSync('jwt-public.key', 'utf8');
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -86,8 +88,13 @@ import { AuthModule } from '../modules/auth/auth.module';
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        secret: config.getOrThrow<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '1d' },
+        // secret: config.getOrThrow<string>('JWT_SECRET'),
+        privateKey: privateKey,
+        publicKey: publicKey,
+        signOptions: {
+          algorithm: 'RS256',
+          expiresIn: '1d',
+        },
       }),
     }),
     ThrottlerModule.forRoot({

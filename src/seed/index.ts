@@ -5,12 +5,7 @@ import { Menu } from '../modules/menu/entities/menu.entity';
 import { MenuVariant } from '../modules/menu-variant/entities/menu-variant.entity';
 
 async function truncateAll(manager: any) {
-  const tables = [
-    'menu_variants',
-    'menus',
-    'categories',
-    'food_types',
-  ];
+  const tables = ['menu_variants', 'menus', 'categories', 'food_types'];
 
   await manager.query(`SET FOREIGN_KEY_CHECKS = 0`);
 
@@ -28,7 +23,7 @@ async function seed() {
   console.log('🌱 Seeding database...');
 
   await AppDataSource.transaction(async (manager) => {
-   //TRUNCATE OLD DATA (MySQL Safe)
+    //TRUNCATE OLD DATA (MySQL Safe)
     await truncateAll(manager);
 
     //FOOD TYPES
