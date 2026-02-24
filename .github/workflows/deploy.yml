@@ -35,6 +35,16 @@ jobs:
 
             git fetch origin main
             git pull origin main
+            if [ ! -f jwt-private.key ]; then
+              echo "Keys not found. Generating new RSA keys..."
+              openssl genrsa -out jwt-private.key 2048
+              openssl rsa -in jwt-private.key -pubout -out jwt-public.key
+              # Secure the private key permissions
+              chmod 600 jwt-private.key
+            else
+                echo "Keys already exist. Skipping generation."
+            fi
+
             yarn install --frozen-lockfile --productionn
             yarn build
 
