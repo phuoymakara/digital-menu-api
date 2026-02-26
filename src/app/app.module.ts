@@ -15,7 +15,7 @@ import { FoodTypeModule } from '../modules/food-type/food-type.module';
 import { AuthModule } from '../modules/auth/auth.module';
 import { readFileSync } from 'fs';
 // import { RolesGuard } from '../common/guards/role.guard';
-// import { ThrottlerBehindProxyGuard } from '../common/guards/throttler-behind-proxy.guard';
+import { ThrottlerBehindProxyGuard } from '../common/guards/throttler-behind-proxy.guard';
 const privateKey = readFileSync('jwt-private.key', 'utf8');
 const publicKey = readFileSync('jwt-public.key', 'utf8');
 @Module({
@@ -122,10 +122,10 @@ const publicKey = readFileSync('jwt-public.key', 'utf8');
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: ThrottlerBehindProxyGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerBehindProxyGuard,
+    },
     // {
     //   provide: APP_GUARD,
     //   useClass: RolesGuard,
